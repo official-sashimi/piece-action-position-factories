@@ -11,8 +11,11 @@
   ],
   "author": "Kota 0kishima <okishimaxyz@gmail.com> (https://github.com/k0kishima)",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/official-sashimi/chess-models.git"
+    "type": "git",
+    "url": "https://github.com/official-sashimi/chess-models.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.6.2"
+  }
 }
