@@ -1,18 +1,21 @@
 {
-  "name": "@official-sashimi/chess-models",
+  "name": "something-package-name",
   "version": "0.1.0",
-  "description": "Implementation of chess models",
-  "main": "index.js",
+  "description": "description for this package",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
     "test": "jest"
   },
   "keywords": [
-    "chess"
+    "foo"
   ],
   "author": "Kota 0kishima <okishimaxyz@gmail.com> (https://github.com/k0kishima)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/official-sashimi/chess-models.git"
+    "url": "https://github.com/k0kishima/npm-package-skeleton.git"
   },
   "license": "MIT",
   "dependencies": {
