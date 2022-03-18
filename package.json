@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "keywords": [
-    "foo"
+    "chess"
   ],
   "author": "Kota 0kishima <okishimaxyz@gmail.com> (https://github.com/k0kishima)",
   "repository": {
@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@official-sashimi/chess-models": "^0.2.0",
     "typescript": "^4.6.2"
   },
   "devDependencies": {
