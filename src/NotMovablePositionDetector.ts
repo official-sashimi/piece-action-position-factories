@@ -6,4 +6,14 @@ export abstract class NotMovablePositionDetector {
   constructor(readonly positionedPieces: PositionedPieces) {}
 
   abstract notMovablePositionsOf(offset: Position): Set<Position>;
+
+  protected getPiece(offset: Position) {
+    const piece = this.positionedPieces[offset.file]?.[offset.rank];
+
+    if (piece) {
+      return piece;
+    }
+
+    throw new Error('a piece does not exist on specified offset.');
+  }
 }

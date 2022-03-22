@@ -20,7 +20,7 @@ const implementsMoveDirectionResponsible = (
 
 export class DirectionalNotMovablePositionDetector extends NotMovablePositionDetector {
   notMovablePositionsOf(offset: Position) {
-    const piece = this.#getPiece(offset);
+    const piece = this.getPiece(offset);
     if (!implementsMoveDirectionResponsible(piece)) {
       throw new Error(
         'The specified piece does not have a move direction getter.',
@@ -53,18 +53,8 @@ export class DirectionalNotMovablePositionDetector extends NotMovablePositionDet
     return new Set(notMovablePositions);
   }
 
-  #getPiece(offset: Position) {
-    const piece = this.positionedPieces[offset.file]?.[offset.rank];
-
-    if (piece) {
-      return piece;
-    }
-
-    throw new Error('a piece does not exist on specified offset.');
-  }
-
   #getInterceptors(offset: Position): Map<MoveDirection, [Position, Piece]> {
-    const piece = this.#getPiece(offset);
+    const piece = this.getPiece(offset);
 
     if (implementsMoveDirectionResponsible(piece)) {
       return InterceptorsFactory.create(

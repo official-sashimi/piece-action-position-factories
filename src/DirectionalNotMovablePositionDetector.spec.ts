@@ -3,7 +3,7 @@ import { DirectionalNotMovablePositionDetector } from './DirectionalNotMovablePo
 
 describe('DirectionalNotMovablePositionDetector', () => {
   describe('notMovablePositionsOf method', () => {
-    describe('to reduce for a white queen piece', () => {
+    describe('for white pieces', () => {
       const positionedPieces = {
         a: { 8: new Rook('Black') },
         c: { 2: new Pawn('White'), 4: new Pawn('Black') },
@@ -55,7 +55,7 @@ describe('DirectionalNotMovablePositionDetector', () => {
       });
     });
 
-    describe('to reduce for a black queen piece', () => {
+    describe('for black pieces', () => {
       const positionedPieces = {
         a: { 4: new Rook('Black'), 5: new Pawn('White'), 8: new Rook('Black') },
         b: { 3: new Pawn('White') },
