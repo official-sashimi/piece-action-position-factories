@@ -1,12 +1,10 @@
 import { MoveDirection, Piece, Position } from '@official-sashimi/chess-models';
 import { InterceptorsFactory } from './Interceptor';
-import { MovablePositionGetterFactory } from './MovablePositionGetterFactory';
-import { NotMovablePositionDetector } from './NotMovablePositionDetector';
-import { PositionSortMethodFactory } from './PositionSortMethodFactory';
+import { TakablePositionDetector } from './TakablePositionDetector';
 import { implementsMoveDirectionResponsible } from './interfaces';
 
-export class DirectionalNotMovablePositionDetector extends NotMovablePositionDetector {
-  notMovablePositionsOf(offset: Position) {
+export class DirectionalTakablePositionDetector extends TakablePositionDetector {
+  takablePositionsOf(offset: Position): Set<Position> {
     const piece = this.getPiece(offset);
     if (!implementsMoveDirectionResponsible(piece)) {
       throw new Error(
@@ -15,29 +13,20 @@ export class DirectionalNotMovablePositionDetector extends NotMovablePositionDet
     }
 
     const interceptors = this.#getInterceptors(offset);
-    const notMovablePositions = Array.from(piece.moveDirections())
+    const takablePositions = Array.from(piece.moveDirections())
       .map((moveDirection) => {
         const interceptor = interceptors.get(moveDirection);
         // eslint-disable-next-line eqeqeq
         if (interceptor == undefined) {
           return [];
         }
-
-        const positionGetter =
-          MovablePositionGetterFactory.create(moveDirection);
-        const sortedMovablePositions = Array.from(positionGetter(offset)).sort(
-          PositionSortMethodFactory.create(moveDirection),
-        );
-
-        const [interceptorPosition] = interceptor;
-        const boundaryIndex = sortedMovablePositions
-          .map((p) => p.toString())
-          .indexOf(interceptorPosition.toString());
-
-        return sortedMovablePositions.slice(boundaryIndex);
+        const [interceptorPosition, interceptingPiece] = interceptor;
+        return piece.color === interceptingPiece.color
+          ? []
+          : [interceptorPosition];
       })
       .flat();
-    return new Set(notMovablePositions);
+    return new Set(takablePositions);
   }
 
   #getInterceptors(offset: Position): Map<MoveDirection, [Position, Piece]> {
