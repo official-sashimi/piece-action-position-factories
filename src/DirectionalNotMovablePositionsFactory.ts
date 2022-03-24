@@ -1,33 +1,26 @@
-import { MoveDirection, Piece, Position } from '@official-sashimi/chess-models';
+import { Position } from '@official-sashimi/chess-models';
+import { PieceActionContext } from './types';
 import { InterceptorsFactory } from './Interceptor';
 import { MovablePositionGetterFactory } from './MovablePositionGetterFactory';
-import { NotMovablePositionDetector } from './NotMovablePositionDetector';
 import { PositionSortMethodFactory } from './PositionSortMethodFactory';
+import { implementsMoveDirectionResponsible } from './interfaces';
 
-export interface MoveDirectionResponsible {
-  moveDirections(): Set<MoveDirection>;
-}
+export class DirectionalNotMovablePositionsFactory {
+  static create(context: PieceActionContext): Set<Position> {
+    const { subject: piece, in: positionedPieces, at: offset } = context;
 
-const implementsMoveDirectionResponsible = (
-  arg: any,
-): arg is MoveDirectionResponsible => {
-  return (
-    arg !== null &&
-    typeof arg === 'object' &&
-    typeof arg.moveDirections === 'function'
-  );
-};
-
-export class DirectionalNotMovablePositionDetector extends NotMovablePositionDetector {
-  notMovablePositionsOf(offset: Position) {
-    const piece = this.getPiece(offset);
     if (!implementsMoveDirectionResponsible(piece)) {
       throw new Error(
         'The specified piece does not have a move direction getter.',
       );
     }
 
-    const interceptors = this.#getInterceptors(offset);
+    const interceptors = InterceptorsFactory.create(
+      offset,
+      positionedPieces,
+      piece.moveDirections(),
+    );
+
     const notMovablePositions = Array.from(piece.moveDirections())
       .map((moveDirection) => {
         const interceptor = interceptors.get(moveDirection);
@@ -51,21 +44,5 @@ export class DirectionalNotMovablePositionDetector extends NotMovablePositionDet
       })
       .flat();
     return new Set(notMovablePositions);
-  }
-
-  #getInterceptors(offset: Position): Map<MoveDirection, [Position, Piece]> {
-    const piece = this.getPiece(offset);
-
-    if (implementsMoveDirectionResponsible(piece)) {
-      return InterceptorsFactory.create(
-        offset,
-        this.positionedPieces,
-        piece.moveDirections(),
-      );
-    }
-
-    throw new Error(
-      'The specified piece does not have a move direction getter.',
-    );
   }
 }

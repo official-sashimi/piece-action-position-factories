@@ -1,9 +1,9 @@
 import { Pawn, Position } from '@official-sashimi/chess-models';
-import { NotMovablePositionDetector } from './NotMovablePositionDetector';
+import { PieceActionContext } from './types';
 
-export class PawnNotMovablePositionDetector extends NotMovablePositionDetector {
-  notMovablePositionsOf(offset: Position) {
-    const piece = this.getPiece(offset);
+export class PawnNotMovablePositionsFactory {
+  static create(context: PieceActionContext): Set<Position> {
+    const { subject: piece, in: positionedPieces, at: offset } = context;
 
     if (!(piece instanceof Pawn)) {
       throw new Error('The specified piece is not a pawn.');
@@ -13,14 +13,14 @@ export class PawnNotMovablePositionDetector extends NotMovablePositionDetector {
 
     if (movablePositions.size === 1) {
       const persistedPiece = Array.from(movablePositions).find(
-        (position) => this.positionedPieces[position.file]?.[position.rank],
+        (position) => positionedPieces[position.file]?.[position.rank],
       );
       return persistedPiece ? movablePositions : new Set([]);
     }
 
     const interceptor = Array.from(movablePositions).find(
       (position) =>
-        this.positionedPieces[position.file]?.[position.rank] &&
+        positionedPieces[position.file]?.[position.rank] &&
         [3, 6].includes(position.rank),
     );
     if (interceptor) {
@@ -29,7 +29,7 @@ export class PawnNotMovablePositionDetector extends NotMovablePositionDetector {
 
     return new Set(
       Array.from(movablePositions).filter((position) => {
-        return this.positionedPieces[position.file]?.[position.rank];
+        return positionedPieces[position.file]?.[position.rank];
       }),
     );
   }

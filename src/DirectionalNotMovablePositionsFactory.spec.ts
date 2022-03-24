@@ -1,8 +1,8 @@
 import { Pawn, Position, Rook, Queen } from '@official-sashimi/chess-models';
-import { DirectionalNotMovablePositionDetector } from './DirectionalNotMovablePositionDetector';
+import { DirectionalNotMovablePositionsFactory } from './DirectionalNotMovablePositionsFactory';
 
-describe('DirectionalNotMovablePositionDetector', () => {
-  describe('notMovablePositionsOf method', () => {
+describe('DirectionalNotMovablePositionsFactory', () => {
+  describe('.create', () => {
     describe('for white pieces', () => {
       const positionedPieces = {
         a: { 8: new Rook('Black') },
@@ -17,14 +17,17 @@ describe('DirectionalNotMovablePositionDetector', () => {
         g: { 5: new Pawn('Black'), 6: new Queen('Black') },
         h: { 4: new Pawn('Black') },
       };
-
-      const reducer = new DirectionalNotMovablePositionDetector(
-        positionedPieces,
-      );
       const offset = new Position('e', 4);
+      const piece = new Queen('White');
 
       it('returns positions which were extracted from a given board', () => {
-        expect(reducer.notMovablePositionsOf(offset)).toEqual(
+        expect(
+          DirectionalNotMovablePositionsFactory.create({
+            subject: piece,
+            in: positionedPieces,
+            at: offset,
+          }),
+        ).toEqual(
           new Set([
             // ↑
             new Position('e', 6),
@@ -70,14 +73,17 @@ describe('DirectionalNotMovablePositionDetector', () => {
         g: { 5: new Pawn('Black'), 6: new Pawn('White') },
         h: { 5: new Pawn('Black') },
       };
-
-      const reducer = new DirectionalNotMovablePositionDetector(
-        positionedPieces,
-      );
       const offset = new Position('d', 5);
+      const piece = new Queen('Black');
 
       it('returns positions which were extracted from a given board', () => {
-        expect(reducer.notMovablePositionsOf(offset)).toEqual(
+        expect(
+          DirectionalNotMovablePositionsFactory.create({
+            subject: piece,
+            in: positionedPieces,
+            at: offset,
+          }),
+        ).toEqual(
           new Set([
             // ↑
             new Position('d', 3),
