@@ -1,11 +1,11 @@
-import { Knight, Position } from '@official-sashimi/chess-models';
+import { Pawn, Position } from '@official-sashimi/chess-models';
 import { PieceActionContext } from './types';
 
-export class KnightTakablePositionsFactory {
+export class PawnTakablePositionsFactory {
   static create(context: PieceActionContext): Set<Position> {
     const { subject: piece, in: positionedPieces, at: offset } = context;
 
-    if (!(piece instanceof Knight)) {
+    if (!(piece instanceof Pawn)) {
       throw new Error('The specified piece is not a knight.');
     }
 
