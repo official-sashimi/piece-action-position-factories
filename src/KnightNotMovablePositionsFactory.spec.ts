@@ -1,22 +1,25 @@
 import { Pawn, Position, Knight } from '@official-sashimi/chess-models';
-import { KnightNotMovablePositionDetector } from './KnightNotMovablePositionDetector';
+import { KnightNotMovablePositionsFactory } from './KnightNotMovablePositionsFactory';
 
-describe('KnightNotMovablePositionDetector', () => {
-  describe('notMovablePositionsOf method', () => {
+describe('KnightNotMovablePositionsFactory', () => {
+  describe('.create', () => {
     describe('for white pieces', () => {
       const positionedPieces = {
         d: { 6: new Pawn('White') },
         e: { 4: new Knight('White') },
         g: { 3: new Knight('Black') },
       };
-
-      const reducer = new KnightNotMovablePositionDetector(positionedPieces);
       const offset = new Position('e', 4);
+      const piece = new Knight('White');
 
       it('returns positions which were extracted from a given board', () => {
-        expect(reducer.notMovablePositionsOf(offset)).toEqual(
-          new Set([new Position('d', 6), new Position('g', 3)]),
-        );
+        expect(
+          KnightNotMovablePositionsFactory.create({
+            subject: piece,
+            in: positionedPieces,
+            at: offset,
+          }),
+        ).toEqual(new Set([new Position('d', 6), new Position('g', 3)]));
       });
     });
 
@@ -26,14 +29,17 @@ describe('KnightNotMovablePositionDetector', () => {
         d: { 5: new Knight('Black') },
         f: { 6: new Pawn('Black') },
       };
-
-      const reducer = new KnightNotMovablePositionDetector(positionedPieces);
       const offset = new Position('d', 5);
+      const piece = new Knight('Black');
 
       it('returns positions which were extracted from a given board', () => {
-        expect(reducer.notMovablePositionsOf(offset)).toEqual(
-          new Set([new Position('b', 4), new Position('f', 6)]),
-        );
+        expect(
+          KnightNotMovablePositionsFactory.create({
+            subject: piece,
+            in: positionedPieces,
+            at: offset,
+          }),
+        ).toEqual(new Set([new Position('b', 4), new Position('f', 6)]));
       });
     });
   });
