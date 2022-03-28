@@ -5,13 +5,13 @@ import { TakablePositionsFactory } from './TakablePositionsFactory';
 
 export class AttackingPositionsFactory {
   static create(context: PieceActionContext): Set<Position> {
-    const { subject: piece } = context;
+    const { subject: piece, at: offset } = context;
 
-    const takablePositions = TakablePositionsFactory.create(context);
     if (piece instanceof Pawn) {
-      return takablePositions;
+      return piece.takablePositionsFrom(offset);
     }
 
+    const takablePositions = TakablePositionsFactory.create(context);
     const movablePositions = MovablePositionsFactory.create(context);
     return new Set([...takablePositions, ...movablePositions]);
   }
