@@ -1,5 +1,12 @@
-import { Knight, Pawn, Piece, Position } from '@official-sashimi/chess-models';
+import {
+  King,
+  Knight,
+  Pawn,
+  Piece,
+  Position,
+} from '@official-sashimi/chess-models';
 import { DirectionalNotMovablePositionsFactory } from './DirectionalNotMovablePositionsFactory';
+import { KingNotMovablePositionsFactory } from './KingNotMovablePositionsFactory';
 import { KnightNotMovablePositionsFactory } from './KnightNotMovablePositionsFactory';
 import { PawnNotMovablePositionsFactory } from './PawnNotMovablePositionsFactory';
 import { PieceActionContext } from './types';
@@ -27,6 +34,8 @@ export class MovablePositionsFactory {
         return PawnNotMovablePositionsFactory;
       case piece instanceof Knight:
         return KnightNotMovablePositionsFactory;
+      case piece instanceof King:
+        return KingNotMovablePositionsFactory;
       default:
         return DirectionalNotMovablePositionsFactory;
     }
