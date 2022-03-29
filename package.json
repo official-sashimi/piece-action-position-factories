@@ -1,7 +1,7 @@
 {
-  "name": "@official-sashimi/position-reducer",
+  "name": "@official-sashimi/piece-action-position-factories",
   "version": "0.1.0",
-  "description": "libraries to reduce positions for chess piece movements",
+  "description": "libraries to create positions for chess piece movements",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "Kota 0kishima <okishimaxyz@gmail.com> (https://github.com/k0kishima)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/official-sashimi/position-reducer.git"
+    "url": "https://github.com/official-sashimi/piece-action-position-factories.git"
   },
   "license": "MIT",
   "dependencies": {
